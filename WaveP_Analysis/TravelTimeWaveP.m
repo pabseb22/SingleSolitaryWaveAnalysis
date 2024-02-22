@@ -2,7 +2,7 @@
 num_probeta = 2;
 
 % Absolute path to the folder where CSV files are located
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SingleSolitaryWaveAnalysis\ResultadosVelocidadOndaP';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosVelocidadOndaP';
 
 % Number of files to process
 num_runs = 5;

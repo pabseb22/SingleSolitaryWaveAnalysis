@@ -1,11 +1,11 @@
 % Load the data from the file
-load('TOFvsYoungAnalysisWithPlate.mat', 'TOF_data');
+load('TOF.mat', 'TOF_data');
 
 % Poisson's ratio values used in the simulation
-pois = [0.1, 0.3, 0.5];
+pois = [0.1,0.2, 0.3, 0.4, 0.5];
 
 % Young's modulus values used in the simulation
-mody = [50e6, 100e6, 200e6, 300e6];
+mody = [5e6, 25e6, 50e6, 100e6, 200e6, 300e6, 400e6];
 
 % Create figure to plot data
 figure;

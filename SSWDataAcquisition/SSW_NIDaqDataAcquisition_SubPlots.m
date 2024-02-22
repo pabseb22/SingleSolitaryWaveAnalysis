@@ -3,20 +3,19 @@ global allTimestamps;
 global startIndex;
 global endIndex;
 global scanData;
-global fileName;  % Define a global variable for the file name
+%global fileName;  % Define a global variable for the file name
 global saveFolderPath;  % Define a global variable for the folder path
 
 % Define the folder path where you want to save the file
-saveFolderPath = 'ResultadosBolazosCaolinProbetas';  % Replace with the actual folder path
+saveFolderPath = "C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\CallibrationSSWSawBones";  % Replace with the actual folder path
 
 % Set the file name here
-fileName = '(EstaSi)Masa#1_SinPlaca_Run#1.mat';
-
+file_name = 'PCF30_#3_PLA_Plate.mat';
 
 format long;
 
 dq = daq("ni"); % Creates a data Acquisition
-dq.Rate = 100000; % Defines Rate or number of Scans Made per Second
+dq.Rate = 51200; % Defines Rate or number of Scans Made per Second
 addinput(dq, "cDAQ1Mod1", "ai0", "Voltage"); %cDAQ1Mod1 Connects to First Device
 
 % Set up the figure and axes for real-time plotting
@@ -62,7 +61,7 @@ scanData = {};  % Initialize cell array to store scan groups
 % Set up a loop to continuously update the plot and store the data
 while true
     % Read the latest data
-    [data, ~] = read(dq, 100000, "OutputFormat", "Matrix"); % Read data for 1 second (1000 scans)
+    [data, ~] = read(dq, 51200, "OutputFormat", "Matrix"); % Read data for 1 second (51200 scans)
     
     % Check if any data is available
     if ~isempty(data)
@@ -96,7 +95,7 @@ while true
         if isvalid(fig) && isvalid(plotAxes)
             plot(plotAxes, allTimestamps(startIndex:endIndex), allData(startIndex:endIndex));
             ylabel(plotAxes, "Voltage (V)");
-            ylim(plotAxes, [min(allData), max(allData)+0.5]);
+            ylim(plotAxes, [min(allData), max(allData)*1.4]);
 
             % Adjust the x-axis limits dynamically
             xlim(plotAxes, [allTimestamps(startIndex), allTimestamps(endIndex)]);
@@ -160,6 +159,15 @@ function endButtonCallback(~, ~)
     global fileName;  % Define a global variable for the file name
     global saveFolderPath;  % Define a global variable for the folder path
     global scanData;
+    % Prompt the user for the filename before each run
+    fileName = input('Enter the filename (e.g., Masa#8_SinPlaca.mat), or type "cancel" to exit: ', 's');
+    
+    if strcmpi(fileName, 'cancel')
+        delete(gcbf); % Close the figure to terminate the program
+        disp('Saving is canceled. Exiting the program.');
+        return;  
+    end
+
     % Combine the folder path and file name to create the full file path
     fullFilePath = fullfile(saveFolderPath, fileName);
 
@@ -181,7 +189,7 @@ function endButtonCallback(~, ~)
         voltages = groupData(:, 2);
 
         % Filter the data by applying a threshold to remove small peaks
-        threshold = 0.4; % Adjust the threshold value as needed
+        threshold = 0.005; % Adjust the threshold value as needed
         filteredVoltages = voltages;
         filteredVoltages(voltages < threshold) = 0;
 

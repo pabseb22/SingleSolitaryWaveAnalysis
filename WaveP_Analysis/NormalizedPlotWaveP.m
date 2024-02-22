@@ -1,11 +1,11 @@
 % Absolute path to the folder where CSV files are located
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SingleSolitaryWaveAnalysis\ResultadosVelocidadOndaP';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosVelocidadOndaPSueloCeramica';
 
 % File index to plot (change to the file you want to visualize)
-file_index = 2;
+file_index = 5;
 
 % Current file name
-file_name = sprintf('ProbetaM1_Run#%d.csv', file_index);
+file_name = sprintf('ProbetaM2_56_Run#%d.csv', file_index);
 
 % Full path to the CSV file
 file_path = fullfile(folder_path, file_name);

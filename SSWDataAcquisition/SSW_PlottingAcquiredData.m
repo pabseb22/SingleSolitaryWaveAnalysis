@@ -1,15 +1,23 @@
-load('Hueso_PCF20_Pelotazo_Con_Placa_.mat');
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosJuanDaniel';
+close all;
+daqfix = 1; 
+file_name = 'Masa#1Ubi-3_6.64%';
+threshold = 0.00005;
+
+file_path = fullfile(folder_path, file_name);
+    
+load(file_path);
 
 % Assuming you have a 1x3 cell array called scanData
-figure;
+%figure;
 
 timeDifferences = [];  % Initialize an empty array to store the time differences
-
+figures = length(scanData);
 for i = 1:numel(scanData)
     data = scanData{i};
     xdata = data(:, 1); % Assuming the first column contains the x-values
     ydata = data(:, 2); % Assuming the second column contains the y-values
-    subplot(1, 3, i);
+    subplot(1, figures, i);
     plot(xdata, ydata);
     xlabel('X-axis Label'); % Add appropriate labels
     ylabel('Y-axis Label');
@@ -17,7 +25,6 @@ for i = 1:numel(scanData)
     grid on; % Add a grid for better visualization
 
     % Filter the data by applying a threshold to remove small peaks
-    threshold = 0.4; % Adjust the threshold value as needed
     filteredYData = ydata;
     filteredYData(ydata < threshold) = 0;
 
@@ -44,7 +51,7 @@ for i = 1:numel(scanData)
         timeDifferences = [timeDifferences; timeDifference];  % Append the time difference to the array
 
         % Display the time difference between the two highest peaks
-        disp(['Timestamp Difference ' num2str(i) ': ' num2str(timeDifference)]);
+        disp(['Timestamp Difference ' num2str(i) ': ' num2str(timeDifference*daqfix)]);
     else
         disp(['Data Group ' num2str(i) ': Less than two peaks detected in the filtered voltage signal.']);
     end
@@ -52,4 +59,4 @@ end
 
 % Calculate and display the mean value of the time differences
 meanTimeDifference = mean(timeDifferences);
-disp(['Mean Time Difference: ' num2str(meanTimeDifference)]);
+disp(['Mean Time Difference: ' num2str(meanTimeDifference*daqfix)]);

@@ -1,7 +1,7 @@
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
-poi1 = 0.4; %% Modulo de Poisson a analizar en el rango de E
+poi1 = 0.495; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [50e6]; %% Pa
+mody = [10e6]; %% Pa
 %mody = [10e6,100e6,300e6,600e6,900e6,1000e6]; %% Rango de mod E para analizar
 
 v0 = 0.26; %%Velocidad sin Placa 0.215
@@ -49,7 +49,7 @@ vw = poi1; % poison de lo que impacta el suelo
 
 % Interpolate the k factor based on the given Young's modulus
 k_factor = interp1(k_abaqus(:,1), k_abaqus(:,2), Ew, 'linear');
-k_factor = 0.98
+k_factor = 1.18905115021913
 
 A = E*(2*R)^0.5/(3*(1 - v^2));
 Aw=4*(R)^0.5/3*(((1 - v^2)/E+(1 - vw^2)/Ew)^(-1));
@@ -76,7 +76,7 @@ end
 % end
 
 % Se pide al usuario el intervalo en el que se evaluará la función
-Intervalo = [0  0.0023];
+Intervalo = [0  0.0028];
 
 % Se escriben las condiciones de frontera.
 U(1) = 0; % desplazamiento

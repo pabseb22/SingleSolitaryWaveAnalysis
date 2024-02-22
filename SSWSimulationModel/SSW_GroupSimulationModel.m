@@ -1,7 +1,10 @@
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
-poils = [0.1,0.2,0.3,0.4,0.5]; %% Array of Poisson's ratio to analyze
-mody = [5e6, 25e6,50e6, 100e6, 200e6]; %% Rango de mod E para analizar
+clear all;
+poils = [0.5];
+mody = [100e6, 200e6, 500e6, 1000e6]; %% Rango de mod E para analizar
+%mody = [10e6];
 v0 = 0.26;
+interval = 0.0020;
 
 cont1 = length(mody);
 E = 200*10^9; % PA
@@ -16,17 +19,14 @@ masas(1)=m;
 
 % Given data for k interpolation
 k_abaqus = [
-5000000     1.375005571
-10000000	1.249750786
-20000000	1.15589109
-40000000	1.093175709
-80000000	1.048640549
-100000000	1.040797358
-160000000	1.024246054
+10000000	1.25356786
+40000000	1.097157963
+100000000	1.044067032
 200000000	1.017856401
-300000000   1.00797541
-800000000   0.98769793
-];
+300000000	1.007975415
+500000000	0.987697925
+1000000000  0.98
+]; %Corregir K de 1000 e6
 
 for i=1:16
     if i==8
@@ -76,7 +76,7 @@ for k = 1:length(poils)
         % end
         
         % Se pide al usuario el intervalo en el que se evaluará la función
-        Intervalo = [0  0.0022];
+        Intervalo = [0  interval];
         
         % Se escriben las condiciones de frontera.
         U(1) = 0; % desplazamiento
@@ -127,10 +127,10 @@ for k = 1:length(poils)
         TOF_data{k, j} = locs(2) - locs(1);
         
         % Clear variables for the next iteration
-        clearvars -except poil mody cont1 E R v Es vs rho m g ms masas v0 TOF_data poils k k_abaqus
+        clearvars -except poil mody cont1 E R v Es vs rho m g ms masas v0 TOF_data poils k k_abaqus interval
     end
 end
 
 % Save the TOF data into a file
-save('TOFvsYoungAnalysisWithPlate.mat', 'TOF_data');
+%save('TOFvsYoungAnalysisWithPlate.mat', 'TOF_data');
 
