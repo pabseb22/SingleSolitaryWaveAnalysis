@@ -1,10 +1,22 @@
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
 clear all;
 poils = [0.5];
-mody = [100e6, 200e6, 500e6, 1000e6]; %% Rango de mod E para analizar
-%mody = [10e6];
-v0 = 0.26;
-interval = 0.0020;
+mody = [10e6, 100e6, 300e6,500e6, 700e6,1000e6]; %% Rango de mod E para analizar
+
+v0 = 0.22;
+interval = 0.0025;
+
+% Given data for k interpolation
+k_abaqus = [
+10000000	1.25356786
+40000000	1.097157963
+100000000	1.040067032
+200000000	1.016979136
+300000000	1.009421823
+500000000	0.997760305
+700000000	0.987656188
+1000000000	0.97950537
+]; 
 
 cont1 = length(mody);
 E = 200*10^9; % PA
@@ -16,17 +28,6 @@ m = 28.21/1000; % Masa de las esferas
 g = 9.81; % Gravedad: m/s^2
 ms=29.85/1000; % masa del sensor
 masas(1)=m;
-
-% Given data for k interpolation
-k_abaqus = [
-10000000	1.25356786
-40000000	1.097157963
-100000000	1.044067032
-200000000	1.017856401
-300000000	1.007975415
-500000000	0.987697925
-1000000000  0.98
-]; %Corregir K de 1000 e6
 
 for i=1:16
     if i==8
@@ -66,15 +67,7 @@ for k = 1:length(poils)
                 d(i)=(masas(i)*g/A)^(2/3); 
             end
         end
-        
-        % for i=1:17
-        %     if i<17
-        %     d3(i)=((i)*m*g/A)^(2/3);
-        %     else
-        %     d3(i)=((i)*m*g/Aw)^(2/3);
-        %     end 
-        % end
-        
+                
         % Se pide al usuario el intervalo en el que se evaluará la función
         Intervalo = [0  interval];
         
@@ -132,5 +125,5 @@ for k = 1:length(poils)
 end
 
 % Save the TOF data into a file
-%save('TOFvsYoungAnalysisWithPlate.mat', 'TOF_data');
+save('TOFvsYoungAnalysisWithPlate_0.5.mat', 'TOF_data');
 

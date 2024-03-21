@@ -1,10 +1,28 @@
+clear all;
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
-poi1 = 0.495; %% Modulo de Poisson a analizar en el rango de E
+poi1 = 0.1; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [10e6]; %% Pa
-%mody = [10e6,100e6,300e6,600e6,900e6,1000e6]; %% Rango de mod E para analizar
+mody = [81e6, 210e6, 445e6]; %% Pa
+%mody = [16e6, 38e6, 58e6, 81e6, 123e6, 210e6, 445e6]; %% Pa
 
-v0 = 0.26; %%Velocidad sin Placa 0.215
+% Se pide al usuario el intervalo en el que se evaluará la función
+Intervalo = [0  0.0024];
+
+v0 = 0.22; %%Velocidad sin Placa 0.26
+
+
+% Given data for k interpolation
+k_abaqus = [
+10000000	1.400738173
+40000000	1.214066829
+100000000	1.11770483
+200000000	1.090921356
+300000000	1.080584377
+500000000	1.072311303
+700000000	1.069433487
+1000000000	1.062920834
+];
+
 cont1= length(mody); 
 
 E = 200*10^9; % PA
@@ -17,20 +35,6 @@ g = 9.81; % Gravedad: m/s^2
 ms=29.85/1000; % masa del sensor
 masas(1)=m;
 
-% Given data for k interpolation
-k_abaqus = [
-5000000     1.375005571
-10000000	1.249750786
-20000000	1.15589109
-40000000	1.093175709
-80000000	1.048640549
-100000000	1.040797358
-160000000	1.024246054
-200000000	1.017856401
-300000000   1.00797541
-800000000   0.98769793
-];
-
 
 for i=1:16
     if i==8
@@ -41,15 +45,20 @@ for i=1:16
 end
 
 %%%%%%% Inicio de armar condiones y resolucion iterativa
+folderName = 'Numerical_Saw_Bones_Data';
+
+all_k_factors = {};
+all_TOF = {};
 
 for j=1:cont1
-    
+
+filename = sprintf('PCF_%.2f_num_data_poi%.2f_v0%.2f.mat', mody(j)/1e6, poi1,v0);
+
 Ew = mody(j); % PA modulo sobre el que impactan las esferas
 vw = poi1; % poison de lo que impacta el suelo
 
 % Interpolate the k factor based on the given Young's modulus
 k_factor = interp1(k_abaqus(:,1), k_abaqus(:,2), Ew, 'linear');
-k_factor = 1.18905115021913
 
 A = E*(2*R)^0.5/(3*(1 - v^2));
 Aw=4*(R)^0.5/3*(((1 - v^2)/E+(1 - vw^2)/Ew)^(-1));
@@ -66,17 +75,6 @@ for i=1:17
         d(i)=(masas(i)*g/A)^(2/3); 
     end
 end
-
-% for i=1:17
-%     if i<17
-%     d3(i)=((i)*m*g/A)^(2/3);
-%     else
-%     d3(i)=((i)*m*g/Aw)^(2/3);
-%     end 
-% end
-
-% Se pide al usuario el intervalo en el que se evaluará la función
-Intervalo = [0  0.0028];
 
 % Se escriben las condiciones de frontera.
 U(1) = 0; % desplazamiento
@@ -124,12 +122,19 @@ FA91 = As.*(d(9) - U(:,10) + U(:,9)).^(3/2);
 
 figure
 plot(t, FA91)
-
-%save('Hueso_PCF20_Simulation_Con_placa.mat', "FA91","t")
+filePath = fullfile(folderName, filename);
+%saveData
+save(filePath, "FA91","t")
 F1 = real(FA91);
 [pks,locs] = findpeaks(F1,t, 'MinPeakHeight' , 40);
-TOFM(j) = locs(2) - locs(1)
-clearvars -except poi1 cont1 mody E R v Es vs rho m g ms masas TOFM v0
+TOFM(j) = locs(2) - locs(1);
+% Print TOF and k_factor values for each iteration
+fprintf('Iteration %d: TOF = %.10f, k_factor = %.10f\n', j, TOFM(j), k_factor);
+all_k_factors = [all_k_factors; k_factor];
+all_TOF = [all_TOF; TOFM(j)];
+clearvars -except poi1 cont1 mody E R v Es vs rho m g ms masas TOFM v0 k_abaqus Intervalo folderName all_k_factors all_TOF
 end
 
-%save('TOFvsYoungAnalysis.mat',"TOFM")
+all_k_factors
+all_TOF
+

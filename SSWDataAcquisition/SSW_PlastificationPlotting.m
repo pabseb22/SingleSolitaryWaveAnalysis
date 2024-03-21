@@ -1,14 +1,18 @@
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosProctorsModificados';
-file_name = 'Masa#1_56_SinPlaca';
+close all;
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosProctorsPabloMajo2';
+% file_name = 'M3_25_Mod_SinPlaca';
+file_name = 'M3_25_Mod_ConPlaca';
 
 % manualMaxXValues = [21.1643, 21.164, 21.164, 21.164];
 manualMaxXValues = [NaN, NaN, NaN, NaN, NaN];
 
-threshold = 0.005;
+threshold = 0.00005;
 
 file_path = fullfile(folder_path, file_name);
 
 load(file_path);
+
+disp(length(scanData))
 
 % Assuming you have a 1x3 cell array called scanData
 figure;

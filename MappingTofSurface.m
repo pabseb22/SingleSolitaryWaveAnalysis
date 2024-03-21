@@ -1,9 +1,9 @@
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\Cuadricula2LaCeramica';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\CuadriculaIntermedia';
 daqfix = 1;
-threshold = 0.005;
+threshold = 0.0005;
 
 % Get a list of all files in the folder with the naming pattern 'M_*_*'
-files = dir(fullfile(folder_path, 'M_*_*'));
+files = dir(fullfile(folder_path, 'MI_*_*'));
 
 % Initialize arrays to store mean time differences and corresponding positions
 meanTimeDifferences = zeros(4, 4);
@@ -45,7 +45,7 @@ for fileIndex = 1:length(files)
     meanTimeDifference = mean(timeDifferences);
     
     % Extract row and column indices from the file name
-    indices = sscanf(file_name, 'M_%d_%d');
+    indices = sscanf(file_name, 'MI_%d_%d');
     row = indices(1);
     col = indices(2);
     
@@ -56,14 +56,19 @@ for fileIndex = 1:length(files)
     disp(['Mean Time Difference for ' file_name ': ' num2str(meanTimeDifference * daqfix)]);
 end
 
+
+% Create the "sky" colormap
+
+
 % Create a heatmap-like visualization using imagesc with 'parula' colormap
 figure;
 imagesc(meanTimeDifferences);
-colormap(parula);
+colormap("sky");
 colorbar;
-title('Cuadricula Inferior');
-xlabel('Column');
-ylabel('Row');
+clim([0.001 0.0020]);
+title('Middle Layer');
+xlabel('X');
+ylabel('Y');
 
 % Add text annotations with mean time difference values
 for row = 1:4
@@ -72,3 +77,4 @@ for row = 1:4
         text(col, row, sprintf('%.5f', value), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', 'Color', 'k', 'FontWeight', 'bold');
     end
 end
+

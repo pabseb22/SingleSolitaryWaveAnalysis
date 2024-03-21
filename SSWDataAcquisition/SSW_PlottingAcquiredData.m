@@ -1,7 +1,8 @@
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosJuanDaniel';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosProctorsPabloMajo2';
 close all;
 daqfix = 1; 
-file_name = 'Masa#1Ubi-3_6.64%';
+file_name = 'M4_56_Mod_ConPlaca';
+% file_name = 'M4_56_Mod_SinPlaca';
 threshold = 0.00005;
 
 file_path = fullfile(folder_path, file_name);
