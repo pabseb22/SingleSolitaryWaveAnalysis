@@ -1,7 +1,7 @@
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\ResultadosBolazosProctorsPabloMajo2';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazosSSW_TOF\Mal#2_Washboard_Verdadero';
 close all;
 daqfix = 1; 
-file_name = 'M4_56_Mod_ConPlaca';
+file_name = 'M#1_Mal#2_Verdadero_ConPlaca';
 % file_name = 'M4_56_Mod_SinPlaca';
 threshold = 0.00005;
 
@@ -52,7 +52,8 @@ for i = 1:numel(scanData)
         timeDifferences = [timeDifferences; timeDifference];  % Append the time difference to the array
 
         % Display the time difference between the two highest peaks
-        disp(['Timestamp Difference ' num2str(i) ': ' num2str(timeDifference*daqfix)]);
+        % disp(['Timestamp Difference ' num2str(i) ': ' num2str(timeDifference*daqfix)]);
+         disp(num2str(timeDifference*daqfix));
     else
         disp(['Data Group ' num2str(i) ': Less than two peaks detected in the filtered voltage signal.']);
     end

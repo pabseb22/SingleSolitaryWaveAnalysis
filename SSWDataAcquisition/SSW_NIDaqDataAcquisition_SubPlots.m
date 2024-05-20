@@ -7,10 +7,10 @@ global scanData;
 global saveFolderPath;  % Define a global variable for the folder path
 
 % Define the folder path where you want to save the file
-saveFolderPath = "C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\CallibrationSSWSawBones";  % Replace with the actual folder path
+saveFolderPath = "C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\CuadrilaProctorsJCFinal";  % Replace with the actual folder path
 
 % Set the file name here
-file_name = 'PCF30_#3_PLA_Plate.mat';
+file_name = 'M#5_25EST.mat';
 
 format long;
 

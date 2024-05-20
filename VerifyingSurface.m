@@ -2,14 +2,14 @@
 save_dir = 'C:\Users\pablo\Desktop';
 
 % Original code to calculate and plot mean time differences
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\CuadriculaIntermedia';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazosSSW_TOF\Cuadricula2LaCeramica';
 daqfix = 1;
 threshold = 0.0005;
 
 close all;
 
 % Get a list of all files in the folder with the naming pattern 'M_*_*'
-files = dir(fullfile(folder_path, 'MI_*_*'));
+files = dir(fullfile(folder_path, 'M_*_*'));
 
 % Initialize arrays to store mean time differences and corresponding positions
 meanTimeDifferences = zeros(4, 4);
@@ -51,7 +51,7 @@ for fileIndex = 1:length(files)
     meanTimeDifference = mean(timeDifferences);
     
     % Extract row and column indices from the file name
-    indices = sscanf(file_name, 'MI_%d_%d');
+    indices = sscanf(file_name, 'M_%d_%d');
     row = indices(1);
     col = indices(2);
     
@@ -62,23 +62,25 @@ for fileIndex = 1:length(files)
     disp(['Mean Time Difference for ' file_name ': ' num2str(meanTimeDifference * daqfix)]);
 end
 
-% Define the base color
-base_color = [192, 0, 0] / 255;  % Convert RGB to [0, 1] range
+% Define the threshold value
+threshold_value = 0.00155809;
 
-% Create a gradient colormap from white to the base color
-num_colors = 100; % Number of colors in the colormap
-colormap_custom = [linspace(1, base_color(1), num_colors)', ...
-                   linspace(1, base_color(2), num_colors)', ...
-                   linspace(1, base_color(3), num_colors)'];
+% Create a custom colormap for the heatmap
+custom_colormap = zeros(2, 3); % Initialize a 2x3 matrix for RGB values
+custom_colormap(1, :) = [0.8, 1, 0.8]; % Light green for values <= threshold
+custom_colormap(2, :) = [1, 0.8, 0.8]; % Light red for values > threshold
 
-% Create the "sky" colormap
-% Create a heatmap-like visualization using imagesc with 'parula' colormap
+% Create a binary matrix based on the threshold
+binaryMatrix = meanTimeDifferences > threshold_value;
+
+% Create the heatmap-like visualization using imagesc
 figure;
-imagesc(meanTimeDifferences);
-colormap(colormap_custom);
-colorbar;
-clim([0.001 0.0020]);
-title('Middle Layer', 'FontName', 'Times New Roman', 'FontSize', 8);
+imagesc(binaryMatrix);
+colormap(custom_colormap);
+caxis([0 1]);
+colorbar('off'); % Disable the colorbar
+title('Bottom Layer', 'FontName', 'Times New Roman', 'FontSize', 8);
+
 
 % Add text annotations with mean time difference values
 for row = 1:4
@@ -100,47 +102,4 @@ ax.YTick = 1:4;
 % Adjust the figure size to 9cm x 9cm and save as PNG
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
-print(gcf, fullfile(save_dir, 'CuadriculaIntermedia.png'), '-dpng', '-r900'); % Save at 300 DPI
-
-% % New code to create the density heatmap
-% % Reshape the density array into a 4x4 matrix
-% density = [
-% 1.719206353	1.584155443	1.681393835	1.698312575;
-% 1.738761829	1.624408437	1.655708519	1.715820696;
-% 1.680350877	1.701151368	1.593159483	1.735227626;
-% 1.675895509	1.705817017	1.555102102	1.72366369;
-% 
-% ];
-% 
-% % Create a new figure for the density heatmap
-% figure;
-% imagesc(density);
-% colormap('sky');
-% h = colorbar;
-% % Add units label to the colorbar
-% ylabel(h, 'g/cm^3', 'FontName', 'Times New Roman', 'FontSize', 8);
-% % Adjust the color limits if necessary
-% % clim([min(density(:)), max(density(:))]);
-% title('Dry Density Distribution', 'FontName', 'Times New Roman', 'FontSize', 8);
-% 
-% % Add text annotations with density values
-% for row = 1:4
-%     for col = 1:4
-%         value = density(row, col);
-%         text(col, row, sprintf('%.3f', value), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', 'Color', 'k', 'FontSize', 8, 'FontName', 'Times New Roman');
-%     end
-% end
-% 
-% % Set the axis tick labels font properties
-% ax = gca;
-% ax.FontName = 'Times New Roman';
-% ax.FontSize = 8;
-% 
-% % Set X and Y axis ticks to show only whole numbers
-% ax.XTick = 1:4;
-% ax.YTick = 1:4;
-% 
-% % Adjust the figure size to 9cm x 9cm and save as PNG
-% set(gcf, 'PaperUnits', 'centimeters');
-% set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
-% print(gcf, fullfile(save_dir, 'Dry_Density_Distribution.png'), '-dpng', '-r300'); % Save at 300 DPI
+print(gcf, fullfile(save_dir, 'CuadriculaInferior.png'), '-dpng', '-r900'); % Save at 300 DPI

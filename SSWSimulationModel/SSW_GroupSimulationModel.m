@@ -1,21 +1,23 @@
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
 clear all;
-poils = [0.5];
-mody = [10e6, 100e6, 300e6,500e6, 700e6,1000e6]; %% Rango de mod E para analizar
+poils = [0.1];
+mody = [10e6 ]; %% Rango de mod E para analizar
+% mody = [10e6, 100e6]; %% Rango de mod E para analizar
+% mody = [300e6,500e6, 700e6,1000e6]; 
 
-v0 = 0.22;
-interval = 0.0025;
+v0 = 0.26;
+interval = 0.0026;
 
 % Given data for k interpolation
 k_abaqus = [
-10000000	1.25356786
-40000000	1.097157963
-100000000	1.040067032
-200000000	1.016979136
-300000000	1.009421823
-500000000	0.997760305
-700000000	0.987656188
-1000000000	0.97950537
+10000000	1.32597368
+40000000	1.15310178
+100000000	1.08218132
+200000000	1.053948882
+300000000	1.04348296
+500000000	1.035025573
+700000000	1.030619376
+1000000000	1.02452853
 ]; 
 
 cont1 = length(mody);
