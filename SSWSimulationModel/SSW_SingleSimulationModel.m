@@ -1,26 +1,26 @@
 clear all;
-%% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados
-poi1 = 0.1; %% Modulo de Poisson a analizar en el rango de E
+%% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados y guardar datos
+poi1 = 0.3; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [81e6, 210e6, 445e6]; %% Pa
+mody = [16e6]; %% Pa
 %mody = [16e6, 38e6, 58e6, 81e6, 123e6, 210e6, 445e6]; %% Pa
 
 % Se pide al usuario el intervalo en el que se evaluará la función
-Intervalo = [0  0.0024];
+Intervalo = [0  0.0026];
 
-v0 = 0.22; %%Velocidad sin Placa 0.26
+v0 = 0.26; %%Velocidad sin Placa 0.26
 
 
 % Given data for k interpolation
 k_abaqus = [
-10000000	1.400738173
-40000000	1.214066829
-100000000	1.11770483
-200000000	1.090921356
-300000000	1.080584377
-500000000	1.072311303
-700000000	1.069433487
-1000000000	1.062920834
+10000000	1.32597368
+40000000	1.15310178
+100000000	1.08218132
+200000000	1.053948882
+300000000	1.04348296
+500000000	1.035025573
+700000000	1.030619376
+1000000000	1.02452853
 ];
 
 cont1= length(mody); 
@@ -60,9 +60,9 @@ vw = poi1; % poison de lo que impacta el suelo
 % Interpolate the k factor based on the given Young's modulus
 k_factor = interp1(k_abaqus(:,1), k_abaqus(:,2), Ew, 'linear');
 
-A = E*(2*R)^0.5/(3*(1 - v^2));
-Aw=4*(R)^0.5/3*(((1 - v^2)/E+(1 - vw^2)/Ew)^(-1));
-As = ((4*sqrt(R))/3)*((1 - v^2)/E + (1 - vs^2)/Es)^-1;
+A = E*(2*R)^0.5/(3*(1 - v^2)); % Ecuacion de contacto entre esferas
+Aw=4*(R)^0.5/3*(((1 - v^2)/E+(1 - vw^2)/Ew)^(-1)); % Ecuacion de contacto entre esfera y muestra
+As = ((4*sqrt(R))/3)*((1 - v^2)/E + (1 - vs^2)/Es)^-1; %Ecuacion de Contacto Sensor y Esfera: Cilindro
 
 for i=1:17
     if i==8

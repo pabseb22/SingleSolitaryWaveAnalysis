@@ -1,9 +1,9 @@
 clear all;
 % Load the saved data from the MAT file
-load('Hueso_PCF5_Simulation_Con_placa.mat');
-load('C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\CallibrationSSWSawBones\PCF05_#1_PLA_Plate.mat');
+load('C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\ResultadosBolazosSSW_TOF\CallibrationSSWSawBones_TOF_Data\PCF30_#1_PLA_Plate.mat');
+load('C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\SSWSimulationModel\Numerical_Saw_Bones_Data\PCF_445.00_num_data_poi0.30_v00.26.mat');
 
-data = scanData{2};
+data = scanData{1};
 xdata = data(:, 1);
 ydata = data(:, 2);
 
@@ -21,7 +21,7 @@ normalizedFA91 = FA91 / maxForce;
 maxScanData = max(ydata);
 normalizedScanData = ydata / maxScanData;
 
-downsampleFactor = 10;
+downsampleFactor = 50;
 downsampledFA91 = downsample(normalizedFA91, downsampleFactor);
 
 downsampledTime = downsample(t, downsampleFactor);

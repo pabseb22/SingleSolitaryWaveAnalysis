@@ -102,4 +102,4 @@ ax.YTick = 1:4;
 % Adjust the figure size to 9cm x 9cm and save as PNG
 set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
-print(gcf, fullfile(save_dir, 'CuadriculaInferior.png'), '-dpng', '-r900'); % Save at 300 DPI
+%print(gcf, fullfile(save_dir, 'CuadriculaInferior.png'), '-dpng', '-r900'); % Save at 300 DPI

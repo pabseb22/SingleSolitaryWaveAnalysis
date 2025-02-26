@@ -1,17 +1,17 @@
 clear all; close all;
 % Load the saved data from the MAT file
 load(['C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\' ...
-    'SSWSimulationModel\Numerical_Saw_Bones_Data\PCF_445.00_num_data_poi0.10_v00.22.mat']);
-load('C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\CallibrationSSWSawBones\PCF30_#1_PLA_Plate.mat');
+    'SSWSimulationModel\Numerical_Saw_Bones_Data\PCF_445.00_num_data_poi0.30_v00.26.mat']);
+load('C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\ResultadosBolazosSSW_TOF\CallibrationSSWSawBones_TOF_Data\PCF30_#1_PLA_Plate.mat');
 
 folderName = 'SSW_Saw_Bones_Callibration_Data';
-filename_exp = 'PCF_30_exp_data.xlsxwqw';
-filename_num = 'PCF_30_num_data.xlsxwqw';
+filename_exp = 'PCF_30_exp_data_v2.xlsx';
+filename_num = 'PCF_30_num_data_v2.xlsx';
 tittle = 'PCF30';
 disp(length(scanData))
 
-save_files = false;
-data = scanData{4};
+save_files = true;
+data = scanData{1};
 
 
 down = 9;

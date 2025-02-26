@@ -102,45 +102,45 @@ set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
 print(gcf, fullfile(save_dir, 'CuadriculaIntermedia.png'), '-dpng', '-r900'); % Save at 300 DPI
 
-% % New code to create the density heatmap
-% % Reshape the density array into a 4x4 matrix
-% density = [
-% 1.719206353	1.584155443	1.681393835	1.698312575;
-% 1.738761829	1.624408437	1.655708519	1.715820696;
-% 1.680350877	1.701151368	1.593159483	1.735227626;
-% 1.675895509	1.705817017	1.555102102	1.72366369;
-% 
-% ];
-% 
-% % Create a new figure for the density heatmap
-% figure;
-% imagesc(density);
-% colormap('sky');
-% h = colorbar;
-% % Add units label to the colorbar
-% ylabel(h, 'g/cm^3', 'FontName', 'Times New Roman', 'FontSize', 8);
-% % Adjust the color limits if necessary
-% % clim([min(density(:)), max(density(:))]);
-% title('Dry Density Distribution', 'FontName', 'Times New Roman', 'FontSize', 8);
-% 
-% % Add text annotations with density values
-% for row = 1:4
-%     for col = 1:4
-%         value = density(row, col);
-%         text(col, row, sprintf('%.3f', value), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', 'Color', 'k', 'FontSize', 8, 'FontName', 'Times New Roman');
-%     end
-% end
-% 
-% % Set the axis tick labels font properties
-% ax = gca;
-% ax.FontName = 'Times New Roman';
-% ax.FontSize = 8;
-% 
-% % Set X and Y axis ticks to show only whole numbers
-% ax.XTick = 1:4;
-% ax.YTick = 1:4;
-% 
-% % Adjust the figure size to 9cm x 9cm and save as PNG
-% set(gcf, 'PaperUnits', 'centimeters');
-% set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
-% print(gcf, fullfile(save_dir, 'Dry_Density_Distribution.png'), '-dpng', '-r300'); % Save at 300 DPI
+% New code to create the density heatmap
+% Reshape the density array into a 4x4 matrix
+density = [
+1.719206353	1.584155443	1.681393835	1.698312575;
+1.738761829	1.624408437	1.655708519	1.715820696;
+1.680350877	1.701151368	1.593159483	1.735227626;
+1.675895509	1.705817017	1.555102102	1.72366369;
+
+];
+
+% Create a new figure for the density heatmap
+figure;
+imagesc(density);
+colormap('sky');
+h = colorbar;
+% Add units label to the colorbar
+ylabel(h, 'g/cm^3', 'FontName', 'Times New Roman', 'FontSize', 8);
+% Adjust the color limits if necessary
+% clim([min(density(:)), max(density(:))]);
+title('Dry Density Distribution', 'FontName', 'Times New Roman', 'FontSize', 8);
+
+% Add text annotations with density values
+for row = 1:4
+    for col = 1:4
+        value = density(row, col);
+        text(col, row, sprintf('%.3f', value), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', 'Color', 'k', 'FontSize', 8, 'FontName', 'Times New Roman');
+    end
+end
+
+% Set the axis tick labels font properties
+ax = gca;
+ax.FontName = 'Times New Roman';
+ax.FontSize = 8;
+
+% Set X and Y axis ticks to show only whole numbers
+ax.XTick = 1:4;
+ax.YTick = 1:4;
+
+% Adjust the figure size to 9cm x 9cm and save as PNG
+set(gcf, 'PaperUnits', 'centimeters');
+set(gcf, 'PaperPosition', [0 0 9 6]); % [left, bottom, width, height]
+print(gcf, fullfile(save_dir, 'Dry_Density_Distribution.png'), '-dpng', '-r300'); % Save at 300 DPI
