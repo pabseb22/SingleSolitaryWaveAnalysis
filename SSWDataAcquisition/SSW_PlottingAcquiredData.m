@@ -1,10 +1,13 @@
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazosSSW_TOF\Mal#2_Washboard_Verdadero';
+
+folder_path = 'C:\Users\pablo\Desktop\MedicionesPAvimentos\ProbetasCortadas20Grados';
 close all;
 daqfix = 1; 
-file_name = 'M#1_Mal#2_Verdadero_ConPlaca';
-% file_name = 'M4_56_Mod_SinPlaca';
-threshold = 0.00005;
+file_name = '22.6_3.5_P1#2.mat';
 
+
+
+threshold = 0.000015;
+                                                                                                                                                                                                                                                                                                                                                                        
 file_path = fullfile(folder_path, file_name);
     
 load(file_path);

@@ -3,14 +3,15 @@ global allTimestamps;
 global startIndex;
 global endIndex;
 global scanData;
-%global fileName;  % Define a global variable for the file name
+global fileName;  % Define a global variable for the file name
 global saveFolderPath;  % Define a global variable for the folder path
+global counter;
 
 % Define the folder path where you want to save the file
-saveFolderPath = "C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\ResultadosBolazos\CuadrilaProctorsJCFinal";  % Replace with the actual folder path
+saveFolderPath = "C:\Users\pablo\Desktop\MedicionesPAvimentos\ProbetasCortadas40Grados";
 
 % Set the file name here
-file_name = 'M#5_25EST.mat';
+fileName = '34.0_6.5_P1.mat';
 
 format long;
 
@@ -22,6 +23,8 @@ addinput(dq, "cDAQ1Mod1", "ai0", "Voltage"); %cDAQ1Mod1 Connects to First Device
 fig = uifigure('Name', 'Real-Time Plot');
 grid = uigridlayout(fig, [2, 1]);
 grid.RowHeight = {'4x', '1x'}; % Adjust row heights
+
+counter = 0;
 
 plotAxes = uiaxes(grid);
 plotAxes.Layout.Row = 1;
@@ -87,7 +90,7 @@ while true
         global startIndex;
         global endIndex;
         timeBefore = 0.0006; % 0.1 seconds before the maximum value
-        timeAfter = 0.0032; % 0.2 seconds after the maximum value
+        timeAfter = 0.007; % 0.2 seconds after the maximum value
         startIndex = max(1, maxIndex - round(timeBefore * dq.Rate));
         endIndex = min(maxIndex + round(timeAfter * dq.Rate), size(allTimestamps, 1));
         
@@ -114,7 +117,8 @@ end
 
 % Callback function for "Reset" button
 function resetButtonCallback(~, ~, fig, plotAxes)
-    disp('Reset button clicked');
+    global counter;
+    disp(['Reset button clicked. TOF Saved = #',num2str(counter)]);
     
     % Clear the graph
     if isvalid(fig) && isvalid(plotAxes)
@@ -135,6 +139,7 @@ function saveButtonCallback(~, ~)
     global startIndex;
     global endIndex;
     global scanData;
+    global counter;
     
     % Check if data is available
     if ~isempty(allData) && ~isempty(allTimestamps)
@@ -143,8 +148,10 @@ function saveButtonCallback(~, ~)
         
         % Append the current scan group to scanData
         scanData{end+1} = subArray;
+        
+        counter = counter + 1;
 
-        disp('Save Scan button clicked');
+        disp(['Save Scan button clicked. TOF Saved = #',num2str(counter)]);
     else
         disp('No data available to save.');
     end
@@ -160,13 +167,13 @@ function endButtonCallback(~, ~)
     global saveFolderPath;  % Define a global variable for the folder path
     global scanData;
     % Prompt the user for the filename before each run
-    fileName = input('Enter the filename (e.g., Masa#8_SinPlaca.mat), or type "cancel" to exit: ', 's');
-    
-    if strcmpi(fileName, 'cancel')
-        delete(gcbf); % Close the figure to terminate the program
-        disp('Saving is canceled. Exiting the program.');
-        return;  
-    end
+    % fileName = input('Enter the filename (e.g., Masa#8_SinPlaca.mat), or type "cancel" to exit: ', 's');
+    % 
+    % if strcmpi(fileName, 'cancel')
+    %     delete(gcbf); % Close the figure to terminate the program
+    %     disp('Saving is canceled. Exiting the program.');
+    %     return;  
+    % end
 
     % Combine the folder path and file name to create the full file path
     fullFilePath = fullfile(saveFolderPath, fileName);

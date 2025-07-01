@@ -2,14 +2,15 @@ clear all;
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados y guardar datos
 poi1 = 0.3; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [16e6]; %% Pa
+mody = [400e6]; %% Pa
 %mody = [16e6, 38e6, 58e6, 81e6, 123e6, 210e6, 445e6]; %% Pa
 
 % Se pide al usuario el intervalo en el que se evaluará la función
-Intervalo = [0  0.0026];
+Intervalo = [0  0.0018];
 
 v0 = 0.26; %%Velocidad sin Placa 0.26
 
+filename = "RegularRun_400MPa";
 
 % Given data for k interpolation
 k_abaqus = [
@@ -28,7 +29,8 @@ cont1= length(mody);
 E = 200*10^9; % PA
 R = 19.05*10^(-3)/2; % m
 v = 0.29;% adimensional Modulo Poison 
-Es = 200*10^9; % E del sensor
+Es = (200*10^9); % E del sensor
+%Es = (200*10^9)/2; % E del sensor
 vs = 0.29;
 m = 28.21/1000; % Masa de las esferas
 g = 9.81; % Gravedad: m/s^2
@@ -45,14 +47,15 @@ for i=1:16
 end
 
 %%%%%%% Inicio de armar condiones y resolucion iterativa
-folderName = 'Numerical_Saw_Bones_Data';
+folderName = 'SensorInfluenceEvidence';
 
 all_k_factors = {};
 all_TOF = {};
 
 for j=1:cont1
 
-filename = sprintf('PCF_%.2f_num_data_poi%.2f_v0%.2f.mat', mody(j)/1e6, poi1,v0);
+%filename = sprintf('PCF_%.2f_num_data_poi%.2f_v0%.2f.mat', mody(j)/1e6, poi1,v0);
+
 
 Ew = mody(j); % PA modulo sobre el que impactan las esferas
 vw = poi1; % poison de lo que impacta el suelo
@@ -63,7 +66,7 @@ k_factor = interp1(k_abaqus(:,1), k_abaqus(:,2), Ew, 'linear');
 A = E*(2*R)^0.5/(3*(1 - v^2)); % Ecuacion de contacto entre esferas
 Aw=4*(R)^0.5/3*(((1 - v^2)/E+(1 - vw^2)/Ew)^(-1)); % Ecuacion de contacto entre esfera y muestra
 As = ((4*sqrt(R))/3)*((1 - v^2)/E + (1 - vs^2)/Es)^-1; %Ecuacion de Contacto Sensor y Esfera: Cilindro
-
+%As = A;
 for i=1:17
     if i==8
         d(i)=(masas(i)*g/As)^(2/3);
@@ -120,11 +123,20 @@ options = odeset('RelTol',1e-05,'AbsTol',1e-09);
 FA9 = As.*( d(8)- U(:,9) + U(:,8)).^(3/2);
 FA91 = As.*(d(9) - U(:,10) + U(:,9)).^(3/2);
 
+average = (FA9 + FA91)/2;
+
+figure
+plot(t, average)
+figure
+plot(t, FA9)
 figure
 plot(t, FA91)
 filePath = fullfile(folderName, filename);
 %saveData
 save(filePath, "FA91","t")
+
+disp("Data saved successfully as Excel file: " + filePath);
+
 F1 = real(FA91);
 [pks,locs] = findpeaks(F1,t, 'MinPeakHeight' , 40);
 TOFM(j) = locs(2) - locs(1);
@@ -135,6 +147,4 @@ all_TOF = [all_TOF; TOFM(j)];
 clearvars -except poi1 cont1 mody E R v Es vs rho m g ms masas TOFM v0 k_abaqus Intervalo folderName all_k_factors all_TOF
 end
 
-all_k_factors
-all_TOF
 
