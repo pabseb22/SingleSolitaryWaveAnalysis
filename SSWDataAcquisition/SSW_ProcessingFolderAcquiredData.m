@@ -8,7 +8,7 @@
 close all; clear all;
 
 % Define folder containing measurement .mat files
-folder_path = 'C:\Users\pablo\Desktop\DatosMedicionesSSW_Abril2025\Caolin_MedicionesSSWJuanFernando_Salesiana';
+folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\Pastas_Mortero_2025\0p30';
 
 % Define desired Poisson's ratio for interpolation
 desiredPoisson = 0.25;

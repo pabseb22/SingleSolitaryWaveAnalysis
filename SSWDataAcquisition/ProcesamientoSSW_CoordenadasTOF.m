@@ -2,7 +2,7 @@
 close all; clear all;
 
 %% Parameters
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\ML_SSW_2025\MedicionesSueloCeramica2024';
+folder_path = 'Caolin_MedicionesSSWJuanFernando_Salesiana';
 threshold = 0.00002;
 minPeakDistance = 0.0001; % Minimum distance between peaks in seconds (adjust as needed)
 
@@ -53,19 +53,19 @@ for fileIdx = 1:length(files)
                 tof1, tof2}];
 
             % Plot only for the second group
-            if groupIdx == 2
-                fig = figure('Name', sprintf('%s - Group %d', file_name, groupIdx));
-                plot(xdata, ydata, '-b'); hold on;
-                plot(peakTimes, peakValues, 'or', 'MarkerSize', 8, 'LineWidth', 1.5);
-                xlabel('Time (s)');
-                ylabel('Amplitude');
-                title(sprintf('Detected Peaks - %s - Group %d', file_name, groupIdx));
-                legend('Signal','Detected Peaks');
-                grid on;
+            %if groupIdx == 2
+            fig = figure('Name', sprintf('%s - Group %d', file_name, groupIdx));
+            plot(xdata, ydata, '-b'); hold on;
+            plot(peakTimes, peakValues, 'or', 'MarkerSize', 8, 'LineWidth', 1.5);
+            xlabel('Time (s)');
+            ylabel('Amplitude');
+            title(sprintf('Detected Peaks - %s - Group %d', file_name, groupIdx));
+            legend('Signal','Detected Peaks');
+            grid on;
 
-                % Wait until figure is closed before continuing
-                waitfor(fig);
-            end
+            % Wait until figure is closed before continuing
+            waitfor(fig);
+            %end
         else
             fprintf('  Group %d: Less than three peaks detected.\n', groupIdx);
         end
