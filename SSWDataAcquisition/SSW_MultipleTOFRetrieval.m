@@ -2,7 +2,7 @@
 close all; clear all;
 
 %% Parameters
-folder_path = 'C:\Users\pablo\Desktop\InvestigacionUSFQ\SSWCompleteAnalysis\SingleSolitaryWaveAnalysis\ML_SSW_2025\MedicionesSueloCeramica2024';
+folder_path = 'SingleSolitaryWaveAnalysis\Pastas_Mortero_2025\0p30';
 threshold = 0.00002;
 minPeakDistance = 0.0001; % Minimum distance between peaks in seconds (adjust as needed)
 
@@ -53,7 +53,7 @@ for fileIdx = 1:length(files)
                 tof1, tof2}];
 
             % Plot only for the second group
-            if groupIdx == 2
+            %if groupIdx == 2
                 fig = figure('Name', sprintf('%s - Group %d', file_name, groupIdx));
                 plot(xdata, ydata, '-b'); hold on;
                 plot(peakTimes, peakValues, 'or', 'MarkerSize', 8, 'LineWidth', 1.5);
@@ -65,7 +65,7 @@ for fileIdx = 1:length(files)
 
                 % Wait until figure is closed before continuing
                 waitfor(fig);
-            end
+            %end
         else
             fprintf('  Group %d: Less than three peaks detected.\n', groupIdx);
         end
