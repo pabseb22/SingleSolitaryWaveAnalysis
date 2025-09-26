@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import butter, filtfilt, iirnotch
-import glob
+import os, glob
+
 
 # ========= PARÁMETROS AJUSTABLES =========
 APPLY_LOWPASS = True
-CUTOFF_HZ = 150.0        # 3–20 Hz suele ir bien para ciclos lentos
+CUTOFF_HZ = 70.0        # 3–20 Hz suele ir bien para ciclos lentos
 FILTER_ORDER = 3
 
 DETREND = True            # quitar media para centrar señales
@@ -41,12 +42,17 @@ def clean_signal(x, fs):
     return y
 
 # ========= PROCESAR VARIOS ARCHIVOS =========
-import os, glob
 
 folder = os.path.join("0p3")
 # files = sorted(glob.glob(os.path.join(folder, "*.txt")))
 
-files = ["ref0p4_120min_v6_f10.txt", "ref0p4_120min_v6_f20.txt", "ref0p4_120min_v6_f30.txt"]
+# files = ["ref0p4_120min_v6_f1.txt","ref0p4_120min_v6_f10.txt", "ref0p4_120min_v6_f20.txt", "ref0p4_120min_v6_f30.txt"]
+# files = ["0p3/v2ref0_90min_v6_f1.txt","0p3/v2ref0_90min_v6_f10.txt", "0p3/v2ref0_90min_v6_f20.txt", "0p3/v2ref0_90min_v6_f30.txt", "0p3/v2ref0_90min_v6_f40.txt", "0p3/v2ref0_90min_v6_f50.txt", "0p3/v2ref0_90min_v6_f60.txt"]
+# files = ["0p35/ref0p35_90min_v6_f1.txt","0p35/ref0p35_90min_v6_f10.txt", "0p35/ref0p35_90min_v6_f20.txt", "0p35/ref0p35_90min_v6_f30.txt", "0p35/ref0p35_90min_v6_f40.txt", "0p35/ref0p35_90min_v6_f50.txt", "0p35/ref0p35_90min_v6_f60.txt"]
+# files = ["0p35/ref0p35_120min_v6_f1.txt","0p35/ref0p35_120min_v6_f10.txt", "0p35/ref0p35_120min_v6_f20.txt", "0p35/ref0p35_120min_v6_f30.txt", "0p35/ref0p35_120min_v6_f40.txt", "0p35/ref0p35_120min_v6_f50.txt"]
+files = ["0p40/ref0p4_90min_v6_f1.txt","0p40/ref0p4_90min_v6_f10.txt", "0p40/ref0p4_90min_v6_f20.txt", "0p40/ref0p4_90min_v6_f30.txt", "0p40/ref0p4_90min_v6_f40.txt", "0p40/ref0p4_90min_v6_f50.txt"]
+
+
 
 if not files:
     print("No se encontraron .txt en la carpeta actual.")
