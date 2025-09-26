@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, r2_score
 import joblib 
 
 # === 1. Cargar datos
@@ -27,13 +27,19 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 print("MAE Dry:", mean_absolute_error(y_test["Dry"], y_pred[:,0]))
 print("MAE W:", mean_absolute_error(y_test["W"], y_pred[:,1]))
+print("R2 Dry:", r2_score(y_test["Dry"], y_pred[:,0]))
+print("R2 W:", r2_score(y_test["W"], y_pred[:,1]))
+
 
 # === 7. Guardar modelo entrenado
 joblib.dump(model, "ssw_model.pkl")
 print("Modelo guardado en ssw_model.pkl")
 
-# === 8. Ejemplo de predicción
-# Supongamos un suelo A (0), energía 2, TOF=0.0018, F1=2.5, Wopt=9.4, DryOpt=2.065
-new_data = pd.DataFrame([[0, 2, 0.0018, 2.5, 0.094, 2.065]],
-                        columns=["Soil", "Energy", "TOF", "F1", "W_Opt", "Dry_Opt"])
-print("Predicción:", model.predict(new_data))
+# TODO: Cambiar energia a joules. Graficas de relacion de features y relacion entre variables.
+# Entre el feature y el target.
+
+# 2. Revisar que es random forest, por que funciona, que parametros recibe y que otras alternativas.
+
+# 3. Revisar papers de ejemplo que usen ML para ver como muestran resultados.
+
+# 4. Agregar Base.
