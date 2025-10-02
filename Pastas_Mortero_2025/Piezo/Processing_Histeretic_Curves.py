@@ -1,103 +1,122 @@
+# files = ["ref0p4_120min_v6_f1.txt","ref0p4_120min_v6_f10.txt", "ref0p4_120min_v6_f20.txt", "ref0p4_120min_v6_f30.txt"]
+# files = ["0p3/v2ref0_90min_v6_f1.txt","0p3/v2ref0_90min_v6_f10.txt", "0p3/v2ref0_90min_v6_f20.txt", "0p3/v2ref0_90min_v6_f30.txt", "0p3/v2ref0_90min_v6_f40.txt", "0p3/v2ref0_90min_v6_f50.txt", "0p3/v2ref0_90min_v6_f60.txt"]
+# files = ["0p35/ref0p35_90min_v6_f1.txt","0p35/ref0p35_90min_v6_f10.txt", "0p35/ref0p35_90min_v6_f20.txt", "0p35/ref0p35_90min_v6_f30.txt", "0p35/ref0p35_90min_v6_f40.txt", "0p35/ref0p35_90min_v6_f50.txt", "0p35/ref0p35_90min_v6_f60.txt"]
+# files = ["0p35/ref0p35_120min_v6_f1.txt","0p35/ref0p35_120min_v6_f10.txt", "0p35/ref0p35_120min_v6_f20.txt", "0p35/ref0p35_120min_v6_f30.txt", "0p35/ref0p35_120min_v6_f40.txt", "0p35/ref0p35_120min_v6_f50.txt"]
+# files = ["0p40/ref0p4_90min_v6_f1.txt","0p40/ref0p4_90min_v6_f10.txt", "0p40/ref0p4_90min_v6_f20.txt", "0p40/ref0p4_90min_v6_f30.txt", "0p40/ref0p4_90min_v6_f40.txt", "0p40/ref0p4_90min_v6_f50.txt"]
+
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import butter, filtfilt, iirnotch
-import os, glob
+from scipy.signal import butter, filtfilt
+import os
 
-
-# ========= PARÁMETROS AJUSTABLES =========
-APPLY_LOWPASS = True
-CUTOFF_HZ = 70.0        # 3–20 Hz suele ir bien para ciclos lentos
+# ========= PARÁMETROS =========
 FILTER_ORDER = 3
+USE_FORCE_COL = 3   # 2 o 3: elige qué columna de fuerza usar
+DETREND = True      # quitar media para centrar señales
 
-DETREND = True            # quitar media para centrar señales
-USE_FORCE_COL = 3         # 2 o 3: elige cuál columna de fuerza usar
+# Geometría de la muestra
+d = 0.05   # m (50 mm)
+h = 0.10   # m (100 mm)
+A = np.pi * (d/2)**2  # área transversal en m²
 
 # ========= FUNCIONES DE FILTRADO =========
 def infer_fs_from_time(t):
     dt = np.diff(t)
     dt = dt[np.isfinite(dt)]
-    # Quita outliers groseros en dt (si los hubiera)
-    med = np.median(dt)
-    mad = np.median(np.abs(dt - med)) + 1e-12
-    dt_clean = dt[np.abs(dt - med) < 5*mad]
-    fs = 1.0 / np.mean(dt_clean)
-    return fs, dt_clean.min(), dt_clean.max(), dt_clean.std()
+    fs = 1.0 / np.mean(dt)
+    return fs
 
-def butter_lowpass(data, cutoff, fs, order=3):
+def butter_bandpass(data, lowcut, highcut, fs, order=3):
     nyq = 0.5 * fs
-    wn = cutoff / nyq
-    b, a = butter(order, wn, btype='low', analog=False)
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype='band')
     return filtfilt(b, a, data)
 
-def notch_60hz(data, fs, q=30.0, f0=60.0):
-    b, a = iirnotch(w0=f0/(fs/2), Q=q)
-    return filtfilt(b, a, data)
-
-def clean_signal(x, fs):
+def clean_signal(x, fs, lowcut, highcut):
     y = x.copy()
     if DETREND:
         y = y - np.nanmean(y)
-    if APPLY_LOWPASS:
-        y = butter_lowpass(y, CUTOFF_HZ, fs, order=FILTER_ORDER)
-    return y
+    return butter_bandpass(y, lowcut, highcut, fs, order=FILTER_ORDER)
 
-# ========= PROCESAR VARIOS ARCHIVOS =========
+# ========= ARCHIVOS =========
+files = [
+    "0p3/v2ref0_90min_v6_f1.txt",
+    "0p3/v2ref0_90min_v6_f10.txt",
+    "0p3/v2ref0_90min_v6_f20.txt",
+    "0p3/v2ref0_90min_v6_f30.txt",
+    "0p3/v2ref0_90min_v6_f40.txt",
+    "0p3/v2ref0_90min_v6_f50.txt",
+    "0p3/v2ref0_90min_v6_f60.txt"
+]
 
-folder = os.path.join("0p3")
-# files = sorted(glob.glob(os.path.join(folder, "*.txt")))
+# ========= ARREGLO DE BANDAS =========
+bandas = [
+    (0.5, 2),    # f1
+    (5, 15),     # f10
+    (15, 25),    # f20
+    (25, 35),    # f30
+    (35, 45),    # f40
+    (45, 55),    # f50
+    (55, 65)     # f60
+]
 
-# files = ["ref0p4_120min_v6_f1.txt","ref0p4_120min_v6_f10.txt", "ref0p4_120min_v6_f20.txt", "ref0p4_120min_v6_f30.txt"]
-# files = ["0p3/v2ref0_90min_v6_f1.txt","0p3/v2ref0_90min_v6_f10.txt", "0p3/v2ref0_90min_v6_f20.txt", "0p3/v2ref0_90min_v6_f30.txt", "0p3/v2ref0_90min_v6_f40.txt", "0p3/v2ref0_90min_v6_f50.txt", "0p3/v2ref0_90min_v6_f60.txt"]
-# files = ["0p35/ref0p35_90min_v6_f1.txt","0p35/ref0p35_90min_v6_f10.txt", "0p35/ref0p35_90min_v6_f20.txt", "0p35/ref0p35_90min_v6_f30.txt", "0p35/ref0p35_90min_v6_f40.txt", "0p35/ref0p35_90min_v6_f50.txt", "0p35/ref0p35_90min_v6_f60.txt"]
-# files = ["0p35/ref0p35_120min_v6_f1.txt","0p35/ref0p35_120min_v6_f10.txt", "0p35/ref0p35_120min_v6_f20.txt", "0p35/ref0p35_120min_v6_f30.txt", "0p35/ref0p35_120min_v6_f40.txt", "0p35/ref0p35_120min_v6_f50.txt"]
-files = ["0p40/ref0p4_90min_v6_f1.txt","0p40/ref0p4_90min_v6_f10.txt", "0p40/ref0p4_90min_v6_f20.txt", "0p40/ref0p4_90min_v6_f30.txt", "0p40/ref0p4_90min_v6_f40.txt", "0p40/ref0p4_90min_v6_f50.txt"]
+# ========= PROCESAR =========
+plt.figure(figsize=(9,7))
+legend_labels = []
 
+for file, (lowcut, highcut) in zip(files, bandas):
+    try:
+        data = np.loadtxt(file, delimiter='\t', skiprows=1)
+    except Exception as e:
+        print(f"[WARN] No pude leer {file}: {e}")
+        continue
 
+    if data.shape[1] < 4:
+        print(f"[WARN] {file} no tiene 4 columnas esperadas.")
+        continue
 
-if not files:
-    print("No se encontraron .txt en la carpeta actual.")
-else:
-    print("Archivos encontrados:")
-    for f in files:
-        print("  -", f)
+    t = data[:,0]
+    disp = data[:,1]      # mm
+    force = data[:, USE_FORCE_COL-1]  # lb
 
-    plt.figure(figsize=(9,7))
-    legend_labels = []
+    # Inferir Fs
+    fs = infer_fs_from_time(t)
+    print(f"\n{file}: Fs≈{fs:.2f} Hz | Banda = [{lowcut}, {highcut}] Hz")
 
-    for file in files:
-        try:
-            # Lee saltando el encabezado
-            data = np.loadtxt(file, delimiter='\t', skiprows=1)
-        except Exception as e:
-            print(f"[WARN] No pude leer {file}: {e}")
-            continue
+    # Conversión de unidades
+    F = force * 4.44822       # lb → N
+    d_m = disp / 1000.0       # mm → m
 
-        # Validación básica
-        if data.shape[1] < 4:
-            print(f"[WARN] {file} no tiene 4 columnas esperadas.")
-            continue
+    # Pasar a esfuerzo-deformación
+    stress = F / A            # Pa
+    strain = d_m / h          # adim.
 
-        t = data[:,0]
-        disp = data[:,1]
-        force = data[:, USE_FORCE_COL-1]  # columnas 2 o 3 para fuerza
+    # Filtrar
+    stress_f = clean_signal(stress, fs, lowcut, highcut)
+    strain_f = clean_signal(strain, fs, lowcut, highcut)
 
-        # Inferir Fs
-        fs, dt_min, dt_max, dt_std = infer_fs_from_time(t)
-        print(f"\n{file}: Fs≈{fs:.2f} Hz | dt_min={dt_min:.6f}s dt_max={dt_max:.6f}s dt_std={dt_std:.2e}")
+    # Recortar a ventana intermedia (ejemplo: 30%-60%)
+    n = len(stress_f)
+    start, end = int(0.3*n), int(0.6*n)
+    stress_cut = stress_f[start:end]
+    strain_cut = strain_f[start:end]
 
-        # Limpiar señales (sin distorsionar fase)
-        disp_f = clean_signal(disp, fs)
-        force_f = clean_signal(force, fs)
+    # Calcular pendiente (módulo aparente)
+    coeffs = np.polyfit(strain_cut, stress_cut, 1)
+    slope = coeffs[0] / 1e6  # Pa → MPa
+    print(f"  -> Pendiente (E_aprox) ≈ {slope:.2f} MPa")
 
-        # Graficar ciclo histérico
-        plt.plot(disp_f, force_f, linewidth=1.0)
-        legend_labels.append(f"{file}")
+    # Graficar ciclo reducido
+    plt.plot(strain_cut, stress_cut/1e6, linewidth=1.0)  # esfuerzo en MPa
+    legend_labels.append(f"{os.path.basename(file)} (E={slope:.1f} MPa)")
 
-    plt.xlabel("Desplazamiento (mm)")
-    plt.ylabel("Fuerza (Lb)")
-    plt.title("Ciclos histéréticos: Fuerza vs Desplazamiento")
-    if legend_labels:
-        plt.legend(legend_labels, fontsize=8)
-    plt.grid(True, alpha=0.4)
-    plt.tight_layout()
-    plt.show()
+# Etiquetas
+plt.xlabel("Deformación unitaria ε [-]")
+plt.ylabel("Esfuerzo σ [MPa]")
+plt.title("Ciclos histéréticos (recorte intermedio)")
+plt.legend(legend_labels, fontsize=8)
+plt.grid(True, alpha=0.4)
+plt.tight_layout()
+plt.show()
+
