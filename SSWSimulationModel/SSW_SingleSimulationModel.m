@@ -2,18 +2,20 @@ clear all;
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados y guardar datos
 poi1 = 0.3; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [400e6]; %% Pa
+mody = [1e6]; %% Pa
 %mody = [16e6, 38e6, 58e6, 81e6, 123e6, 210e6, 445e6]; %% Pa
 
 % Se pide al usuario el intervalo en el que se evaluará la función
-Intervalo = [0  0.0018];
+Intervalo = [0  0.0035   ];
 
 v0 = 0.26; %%Velocidad sin Placa 0.26
 
-filename = "RegularRun_400MPa";
+filename = "RegularRun_5MPa";
 
 % Given data for k interpolation
 k_abaqus = [
+1000000     1.746240578
+5000000     1.333728932
 10000000	1.32597368
 40000000	1.15310178
 100000000	1.08218132
