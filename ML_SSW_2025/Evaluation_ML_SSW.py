@@ -9,7 +9,7 @@ model = joblib.load("ssw_model.pkl")
 print("Modelo cargado exitosamente.\n")
 
 # === 2. Cargar dataset de prueba
-df = pd.read_csv("ml_training_data_complete.csv", sep=";")  # Ajusta sep si tu CSV es tabulado
+df = pd.read_csv("ml_test_data_ceramica.csv", sep=";")  # Ajusta sep si tu CSV es tabulado
 
 # Codificar Soil si es categórico
 df["Soil"] = LabelEncoder().fit_transform(df["Soil"])
@@ -40,13 +40,8 @@ print(f"R² Dry: {r2_dry:.4f}")
 print(f"R² W: {r2_w:.4f}\n")
 
 # === 5. Mostrar predicciones vs valores reales de los primeros 5 registros
-print("Primeros 5 registros - Real vs Predicción:")
-for i in range(5):
+print("Registros - Real vs Predicción:")
+for i in range(len(y)):
     print(f"Dry: real={y['Dry'].iloc[i]:.3f}, pred={y_pred[i,0]:.3f} | "
           f"W: real={y['W'].iloc[i]:.3f}, pred={y_pred[i,1]:.3f}")
 
-# === 6. Ejemplo de predicción para un nuevo dato
-new_sample = pd.DataFrame([[0, 2, 0.0018, 2.5, 0.094, 2.065]],
-                          columns=["Soil", "Energy", "TOF", "F1", "W_Opt", "Dry_Opt"])
-pred_new = model.predict(new_sample)
-print(f"\nPredicción para nuevo dato: Dry={pred_new[0,0]:.3f}, W={pred_new[0,1]:.3f}")
