@@ -2,7 +2,7 @@ clear all;
 %% Programa para generar la simulacion del choque y obtener TOF con Poisson y E Dados y guardar datos
 poi1 = 0.3; %% Modulo de Poisson a analizar en el rango de E
 
-mody = [0.000001e6]; %% Pa
+mody = [0.00001e6]; %% Pa
 %mody = [16e6, 38e6, 58e6, 81e6, 123e6, 210e6, 445e6]; %% Pa
 
 % Se pide al usuario el intervalo en el que se evaluará la función

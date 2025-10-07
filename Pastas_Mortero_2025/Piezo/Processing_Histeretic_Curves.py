@@ -56,23 +56,23 @@ def pick_force(f1, f2, strategy="average"):
         return 0.5*(f1 + f2)
 
 # ========= ARCHIVOS Y BANDAS =========
-# files = [
-#     "0p3/v2ref0_90min_v6_f1.txt",
-#     "0p3/v2ref0_90min_v6_f10.txt",
-#     "0p3/v2ref0_90min_v6_f20.txt",
-#     "0p3/v2ref0_90min_v6_f30.txt",
-#     "0p3/v2ref0_90min_v6_f40.txt",
-#     "0p3/v2ref0_90min_v6_f50.txt",
-#     "0p3/v2ref0_90min_v6_f60.txt"
-# ]
+files = [
+    "0p3/v2ref0_90min_v6_f1.txt",
+    "0p3/v2ref0_90min_v6_f10.txt",
+    "0p3/v2ref0_90min_v6_f20.txt",
+    "0p3/v2ref0_90min_v6_f30.txt",
+    "0p3/v2ref0_90min_v6_f40.txt",
+    "0p3/v2ref0_90min_v6_f50.txt",
+    "0p3/v2ref0_90min_v6_f60.txt"
+]
 
-files = ["0p35/ref0p35_90min_v6_f1.txt",
-         "0p35/ref0p35_90min_v6_f10.txt", 
-         "0p35/ref0p35_90min_v6_f20.txt", 
-         "0p35/ref0p35_90min_v6_f30.txt", 
-         "0p35/ref0p35_90min_v6_f40.txt", 
-         "0p35/ref0p35_90min_v6_f50.txt", 
-         "0p35/ref0p35_90min_v6_f60.txt"]
+# files = ["0p35/ref0p35_90min_v6_f1.txt",
+#          "0p35/ref0p35_90min_v6_f10.txt", 
+#          "0p35/ref0p35_90min_v6_f20.txt", 
+#          "0p35/ref0p35_90min_v6_f30.txt", 
+#          "0p35/ref0p35_90min_v6_f40.txt", 
+#          "0p35/ref0p35_90min_v6_f50.txt", 
+#          "0p35/ref0p35_90min_v6_f60.txt"]
 
 bandas = [
     (0.5, 2), 
