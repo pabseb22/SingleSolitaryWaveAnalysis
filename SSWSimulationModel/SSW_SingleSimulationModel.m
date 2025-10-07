@@ -136,7 +136,7 @@ figure
 plot(t, FA91)
 filePath = fullfile(folderName, filename);
 %saveData
-save(filePath, "FA91","t")
+% save(filePath, "FA91","t")
 
 disp("Data saved successfully as Excel file: " + filePath);
 
