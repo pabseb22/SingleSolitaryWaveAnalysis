@@ -99,6 +99,6 @@ end
 
 %% Save Results to Excel
 
-excel_filename = fullfile(folder_path, 'time_differences_results.xlsx');
-writetable(resultsTable, excel_filename);
-fprintf('\nAll time differences saved to: %s\n', excel_filename);
+% excel_filename = fullfile(folder_path, 'time_differences_results.xlsx');
+% writetable(resultsTable, excel_filename);
+% fprintf('\nAll time differences saved to: %s\n', excel_filename);

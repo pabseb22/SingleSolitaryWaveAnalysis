@@ -111,6 +111,6 @@ for fileIdx = 1:length(files)
 end
 
 %% Save Excel
-excel_filename = fullfile(folder_path, 'secondary_TOF_results.xlsx');
-writetable(resultsTable, excel_filename);
-fprintf('\nTop 3 peaks (with F1,F2) saved to: %s\n', excel_filename);
+% excel_filename = fullfile(folder_path, 'secondary_TOF_results.xlsx');
+% writetable(resultsTable, excel_filename);
+% fprintf('\nTop 3 peaks (with F1,F2) saved to: %s\n', excel_filename);
