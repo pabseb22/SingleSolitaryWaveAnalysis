@@ -9,32 +9,23 @@
 #     "0p3/v2ref0_90min_v6_f60.txt"
 # ]
 
-# files = [
-#       "0p35/ref0p35_90min_v6_f1.txt",
-#          "0p35/ref0p35_90min_v6_f10.txt", 
-#          "0p35/ref0p35_90min_v6_f20.txt", 
-#          "0p35/ref0p35_90min_v6_f30.txt", 
-#          "0p35/ref0p35_90min_v6_f40.txt", 
-#          "0p35/ref0p35_90min_v6_f50.txt", 
-#          "0p35/ref0p35_90min_v6_f60.txt"]
+files = [
+      "0p35/ref0p35_90min_v6_f1.txt",
+         "0p35/ref0p35_90min_v6_f10.txt", 
+         "0p35/ref0p35_90min_v6_f20.txt", 
+         "0p35/ref0p35_90min_v6_f30.txt", 
+         "0p35/ref0p35_90min_v6_f40.txt", 
+         "0p35/ref0p35_90min_v6_f50.txt", 
+         "0p35/ref0p35_90min_v6_f60.txt"]
 
 
-# Graphs: 
-# 1. Slope (ModE) vs frequency. para tres relaciones
-# Frequency en el eje x, indicada en el archivo. desde 10 Hz hasta 60 Hz. Ploteando la pendiente.
 
-# 2. ModeE bolazo contra Tof numerico y experimental (valores de las hiteretizas)
-# En la misma grafia de 
-
-
-# 3. Ciclos histereticos en bonito.
-
-files = ["0p40/ref0p4_90min_v6_f1.txt",
-"0p40/ref0p4_90min_v6_f10.txt", 
-"0p40/ref0p4_90min_v6_f20.txt", 
-"0p40/ref0p4_90min_v6_f30.txt", 
-"0p40/ref0p4_90min_v6_f40.txt", 
-"0p40/ref0p4_90min_v6_f50.txt"]
+# files = ["0p40/ref0p4_90min_v6_f1.txt",
+# "0p40/ref0p4_90min_v6_f10.txt", 
+# "0p40/ref0p4_90min_v6_f20.txt", 
+# "0p40/ref0p4_90min_v6_f30.txt", 
+# "0p40/ref0p4_90min_v6_f40.txt", 
+# "0p40/ref0p4_90min_v6_f50.txt"]
 
 
 bandas = [
@@ -44,7 +35,7 @@ bandas = [
     (25, 35), 
     (35, 45), 
     (45, 55), 
-    # (55, 65)
+    (55, 65)
 ]
 
 import numpy as np
